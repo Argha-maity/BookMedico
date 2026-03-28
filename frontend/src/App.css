@@ -1,0 +1,8 @@
+.App {
+  text-align: center;
+}
+
+/* smooth button hover */
+button {
+  transition: all 0.2s ease;
+}
