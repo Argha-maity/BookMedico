@@ -4,6 +4,7 @@ import { getProfile } from "../../services/auth";
 import { getDoctors } from "../../services/doctorService";
 import { useNavigate } from "react-router-dom";
 import { getMyAppointments, bookAppointment } from "../../services/appointmentService";
+import { uploadPrescription } from "../../services/prescriptionService";
 import {
   Calendar,
   MapPin,
