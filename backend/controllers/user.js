@@ -86,6 +86,9 @@ const handleUserLogin = async (req, res) => {
             });
         }
 
+        user.lastLogin = Date.now();
+        await user.save();
+
         const token = generateToken(user);
 
         res.json({
@@ -137,9 +140,19 @@ const updateProfile = async (req,res)=>{
 
 };
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select("-password").sort({ createdAt: -1 });
+        res.json({ success: true, users });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 export {
     handleUserSignup,
     handleUserLogin,
     getProfile,
     updateProfile,
+    getAllUsers,
 };

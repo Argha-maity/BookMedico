@@ -1,29 +1,43 @@
 import mongoose from "mongoose";
 
 const prescriptionSchema = new mongoose.Schema({
-    appointmentId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Appointment', required: true 
-    },
-    patientId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', required: true 
-    },
-    doctorId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', required: true 
-    },
-    diagnosis: { 
-        type: String, 
-        required: true },
-    medicines: [{
-        name: { type: String, required: true },
-        dosage: { type: String, required: true }, // e.g., "1-0-1"
-        duration: { type: String, required: true }, // e.g., "5 Days"
-    }],
-    advice: { type: String },
-    date: { type: Date, default: Date.now }
+  appointmentId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Appointment',
+    default: null
+  },
+  doctorId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User',
+    default: null
+  },
+
+  patientId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
+  },
+
+  fileUrl: { type: String, default: null },
+
+  diagnosis: { type: String, default: "" },
+
+  medicines: [{
+    name: String,
+    dosage: String,
+    duration: String,
+  }],
+
+  advice: { type: String, default: "" },
+
+  type: { 
+    type: String, 
+    enum: ["doctor", "upload"], 
+    default: "doctor" 
+  },
+
+  date: { type: Date, default: Date.now }
+
 }, { timestamps: true });
 
-const Prescription = mongoose.model("Prescription", prescriptionSchema);
-export default Prescription;
+export default mongoose.model("Prescription", prescriptionSchema);

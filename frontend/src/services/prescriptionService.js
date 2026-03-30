@@ -14,3 +14,8 @@ export const getMyPrescriptions = async () => {
   const res = await API.get(`/prescriptions/details/${id}`);
   return res.data;
 };*/
+
+export const uploadPrescription = async (data) => {
+  const res = await API.post("/prescriptions/upload", data);
+  return res.data;
+};

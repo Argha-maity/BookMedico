@@ -44,7 +44,33 @@ const getPatientPrescriptions = async (req, res) => {
     }
 };
 
+const uploadPrescription = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const newPrescription = new Prescription({
+      patientId: req.user.id,
+      fileUrl: req.file.path,
+      type: "upload", 
+    });
+
+    await newPrescription.save();
+
+    res.status(201).json({
+      message: "Uploaded successfully",
+      prescription: newPrescription,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Upload failed" });
+  }
+};
+
 export {
     createPrescription,
     getPatientPrescriptions,
+    uploadPrescription,
 }

@@ -27,7 +27,7 @@ const PatientDashboard = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  
+
   // State for Appointment Detail Popup
   const [selectedAppt, setSelectedAppt] = useState(null);
 
@@ -82,6 +82,22 @@ const PatientDashboard = () => {
       alert(err.response?.data?.message || "Booking failed");
     }
   };
+
+  const handlePrescriptionUpload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    await uploadPrescription(formData); // create this API
+    alert("Uploaded & sent for AI analysis");
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed");
+  }
+};
 
   return (
     <DashboardLayout role="patient">
@@ -163,7 +179,18 @@ const PatientDashboard = () => {
         <div className="space-y-8">
           <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-[2.5rem] shadow-xl">
             <h4 className="text-lg font-bold mb-2">Prescription AI Analysis</h4>
-            <p className="text-slate-400 text-sm">Upload prescription to analyze medicines and dosage.</p>
+            <p className="text-slate-400 text-sm mb-4">Upload prescription to analyze medicines and dosage.</p>
+            <label className="block">
+              <div className="bg-white text-slate-900 px-4 py-2 rounded-xl text-sm font-bold text-center cursor-pointer hover:bg-slate-100 transition-all">
+                Upload Prescription
+              </div>
+              <input
+                type="file"
+                accept="image/*,.pdf"
+                className="hidden"
+                onChange={handlePrescriptionUpload}
+              />
+            </label>
           </div>
           <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100">
             <h4 className="font-bold text-emerald-900 mb-3 flex items-center gap-2">
@@ -180,18 +207,18 @@ const PatientDashboard = () => {
           <div className="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-start mb-6">
               <h3 className="text-2xl font-black text-slate-900">Appointment Details</h3>
-              <button 
-                onClick={() => setSelectedAppt(null)} 
+              <button
+                onClick={() => setSelectedAppt(null)}
                 className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-all cursor-pointer"
               >
-                <X size={20} className="text-slate-600"/>
+                <X size={20} className="text-slate-600" />
               </button>
             </div>
-            
+
             <div className="space-y-4 text-slate-700 font-medium">
               <DetailRow label="Doctor Name" value={`Dr. ${selectedAppt.doctorId?.name || "N/A"}`} />
               <DetailRow label="Specialization" value={selectedAppt.doctorId?.speciality || "General Physician"} />
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <DetailRow label="Date" value={selectedAppt.slotDate} />
                 <DetailRow label="Time Slot" value={selectedAppt.slotTime} />
@@ -200,22 +227,21 @@ const PatientDashboard = () => {
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100/50 flex justify-between items-center">
                 <div>
                   <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Status</p>
-                  <p className={`font-bold capitalize ${
-                    selectedAppt.status === 'completed' ? 'text-emerald-600' : 'text-primary'
-                  }`}>
+                  <p className={`font-bold capitalize ${selectedAppt.status === 'completed' ? 'text-emerald-600' : 'text-primary'
+                    }`}>
                     {selectedAppt.status}
                   </p>
                 </div>
                 {selectedAppt.status === 'completed' && (
-                   <button className="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-bold">
-                      View Prescription
-                   </button>
+                  <button className="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-bold">
+                    View Prescription
+                  </button>
                 )}
               </div>
             </div>
 
-            <button 
-              onClick={() => setSelectedAppt(null)} 
+            <button
+              onClick={() => setSelectedAppt(null)}
               className="w-full mt-8 bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg"
             >
               Close Details
@@ -315,21 +341,20 @@ const ServiceCard = ({ icon, label, isNew, onClick }) => (
 const AppointmentRow = ({ name, date, status, type }) => (
   <div className="flex items-center justify-between p-5 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-all group">
     <div className="flex items-center gap-4">
-        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-bold text-primary shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
-            {name[0]}
-        </div>
-        <div>
-            <p className="font-bold text-slate-800">{name}</p>
-            <p className="text-xs text-slate-500 font-medium">{type} • {date}</p>
-        </div>
+      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-bold text-primary shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
+        {name[0]}
+      </div>
+      <div>
+        <p className="font-bold text-slate-800">{name}</p>
+        <p className="text-xs text-slate-500 font-medium">{type} • {date}</p>
+      </div>
     </div>
     <div className="flex items-center gap-3">
-        <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${
-            status === 'completed' ? 'bg-emerald-100 text-emerald-600' : 'bg-primary/10 text-primary'
+      <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${status === 'completed' ? 'bg-emerald-100 text-emerald-600' : 'bg-primary/10 text-primary'
         }`}>
-            {status}
-        </span>
-        <ChevronRight size={18} className="text-slate-300 group-hover:text-primary transition-all" />
+        {status}
+      </span>
+      <ChevronRight size={18} className="text-slate-300 group-hover:text-primary transition-all" />
     </div>
   </div>
 );

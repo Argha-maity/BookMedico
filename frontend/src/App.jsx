@@ -10,7 +10,7 @@ import Profile from './pages/Profile';
 import DoctorsPage from "./pages/doctors/DoctorsPage";
 import HealthVault from "./pages/patient/HealthVault";
 import InventoryPage from "./pages/admin/InventoryPage";
-
+import UserManagement from "./pages/admin/UserManagement";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
         <Route path="/admin/doctors" element={<DoctorsPage role="admin" />} />
         <Route path="/health-vault" element={<HealthVault role="patient" />} />
         <Route path="/inventory" element={<InventoryPage role="admin" />} />
+        <Route path="/admin/users" element={<UserManagement role="admin" />} />
       </Routes>
     </Router>
   );

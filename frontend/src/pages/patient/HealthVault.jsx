@@ -66,7 +66,7 @@ const HealthVault = () => {
             <DocumentItem 
                 key={rec._id}
                 title={rec.medicines ? "Digital Prescription" : rec.title} 
-                type={rec.medicines ? "Prescription" : "Report"} 
+                type={rec.type === "doctor" ? "Prescription" : "Uploaded File"} 
                 date={new Date(rec.date).toLocaleDateString()} 
                 doctor={rec.doctorId?.name || "Self Uploaded"} 
                 isDigital={!!rec.medicines}

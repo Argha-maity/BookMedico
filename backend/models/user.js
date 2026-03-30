@@ -60,6 +60,11 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
 
+    lastLogin: { 
+        type: Date, 
+        default: Date.now 
+    },
+
     role: {
         type: String,
         enum: ["patient", "doctor", "admin"],
