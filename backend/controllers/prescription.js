@@ -1,5 +1,7 @@
 import Prescription from "../models/prescription.js";
 import Appointment from "../models/appointment.js";
+import { extractTextFromFile } from "../utils/ocr.js";
+import { extractMedicinesFromText } from "../utils/aiParser.js";
 
 const createPrescription = async (req, res) => {
     try {
@@ -50,17 +52,28 @@ const uploadPrescription = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
+    const filePath = req.file.path;
+    const extractedText = await extractTextFromFile(filePath);
+    const medicines = await extractMedicinesFromText(extractedText);
+
+    if (!medicines.length) {
+      console.log("no medicine detected using AI");
+    }
+
     const newPrescription = new Prescription({
       patientId: req.user.id,
-      fileUrl: req.file.path,
-      type: "upload", 
+      fileUrl: filePath,
+      type: "upload",
+      extractedText,
+      medicines
     });
 
     await newPrescription.save();
 
     res.status(201).json({
-      message: "Uploaded successfully",
-      prescription: newPrescription,
+      message: "Uploaded & text extracted",
+      medicines,
+      prescription: newPrescription
     });
 
   } catch (error) {

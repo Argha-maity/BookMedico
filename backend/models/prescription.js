@@ -28,7 +28,15 @@ const prescriptionSchema = new mongoose.Schema({
     duration: String,
   }],
 
-  advice: { type: String, default: "" },
+  advice: { 
+    type: String, 
+    default: "" 
+  },
+
+  extractedText: { 
+    type: String, 
+    default: "" 
+  },
 
   type: { 
     type: String, 
