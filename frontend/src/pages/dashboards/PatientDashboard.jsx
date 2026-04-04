@@ -139,6 +139,7 @@ const PatientDashboard = () => {
             <ServiceCard
               icon={<MapPin className="text-blue-500" />}
               label="Nearby Stores"
+              onClick={() => navigate("/medical-stores")}
             />
             <ServiceCard
               icon={<ShoppingBag className="text-orange-500" />}
