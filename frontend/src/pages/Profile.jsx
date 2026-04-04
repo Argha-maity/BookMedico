@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getProfile } from "../services/auth";
+import { useNavigate } from "react-router-dom"; 
 import { 
   User as UserIcon, Mail, Phone, MapPin, 
-  Calendar, Camera, Edit3, Save, X 
+  Calendar, Camera, Edit3, Save, X, ArrowLeft 
 } from "lucide-react";
 
 const Profile = () => {
+  const navigate = useNavigate(); 
   const [user, setUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -29,6 +31,19 @@ const Profile = () => {
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
+      
+      {/* PROFESSIONAL BACK BUTTON */}
+      <div className="mb-6 flex justify-start">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="group flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-100 text-slate-600 rounded-2xl font-bold shadow-sm hover:shadow-md hover:border-primary/20 hover:text-primary transition-all cursor-pointer"
+        >
+          <div className="p-1.5 bg-slate-50 rounded-xl group-hover:bg-primary/10 transition-colors">
+            <ArrowLeft size={18} />
+          </div>
+          <span className="text-sm tracking-tight">Back to Dashboard</span>
+        </button>
+      </div>
       
       {/* Profile Header Card */}
       <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 mb-8">
@@ -76,7 +91,7 @@ const Profile = () => {
       {/* Profile Details Grid */}
       <div className="grid lg:grid-cols-3 gap-8">
         
-        {/* Contact Info (Point 1) */}
+        {/* Contact Info */}
         <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm space-y-6">
           <h3 className="text-lg font-bold text-slate-800 border-b border-slate-50 pb-4">Contact Info</h3>
           
@@ -85,7 +100,7 @@ const Profile = () => {
           <InfoItem icon={<Calendar size={18} />} label="Date of Birth" value={user.dob ? new Date(user.dob).toLocaleDateString() : "Not Provided"} />
         </div>
 
-        {/* Personal & Address Details (Point 2) */}
+        {/* Personal & Address Details */}
         <div className="lg:col-span-2 bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
           <h3 className="text-lg font-bold text-slate-800 border-b border-slate-50 pb-4 mb-6">Personal Details</h3>
           
@@ -110,8 +125,6 @@ const Profile = () => {
   );
 };
 
-// --- Sub-components for cleaner structure ---
-
 const InfoItem = ({ icon, label, value }) => (
   <div className="flex items-start gap-4">
     <div className="p-3 bg-slate-50 text-primary rounded-xl">
@@ -130,6 +143,7 @@ const DetailField = ({ label, value, isEdit, type = "text", options }) => (
     {isEdit ? (
       type === "select" ? (
         <select className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary">
+          <option value="">Select Gender</option>
           {options.map(opt => <option key={opt} selected={opt === value}>{opt}</option>)}
         </select>
       ) : (
