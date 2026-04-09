@@ -16,9 +16,9 @@ const Sidebar = ({ role, sidebarOpen, setSidebarOpen }) => {
     ],
     doctor: [
       { name: "Dashboard", path: "/doctor-dashboard", icon: <LayoutDashboard size={20} /> },
-      { name: "Doctor CV", path: "/doctor-cv", icon: <ClipboardList size={20} /> },
+      { name: "Doctor Credentials", path: "/doctor-credentials", icon: <ClipboardList size={20} /> },
       { name: "Nearby Stores", path: "/medical-stores", icon: <Store size={20} /> },
-      { name: "Schedule", path: "/calendar", icon: <Calendar size={20} /> },
+      { name: "Schedule", path: "/schedule", icon: <Calendar size={20} /> },
     ],
     admin: [
       { name: "Dashboard", path: "/admin-dashboard", icon: <LayoutDashboard size={20} /> },

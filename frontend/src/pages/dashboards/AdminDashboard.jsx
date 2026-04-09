@@ -82,9 +82,15 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <StatWidget title="Total Revenue" value="₹42,500" trend="+12%" icon={<Wallet className="text-emerald-500" />} />
         <div onClick={() => navigate("/admin/doctors")} className="cursor-pointer">
-          <StatWidget title="Total Doctors" value="14" trend="Active" icon={<Stethoscope className="text-blue-500" />} />
+          <StatWidget 
+            title="Total Doctors" 
+            value="14" trend="Active" 
+            icon={<Stethoscope className="text-blue-500" />} 
+          />
+        </div >
+        <div onClick={() => navigate("/admin/patients")} className="cursor-pointer">
+          <StatWidget title="Total Patients" value="1,240" trend="+84" icon={<Users className="text-purple-500" />} />
         </div>
-        <StatWidget title="Total Patients" value="1,240" trend="+84" icon={<Users className="text-purple-500" />} />
 
         <div onClick={() => navigate("/inventory")} className="cursor-pointer group">
           <StatWidget

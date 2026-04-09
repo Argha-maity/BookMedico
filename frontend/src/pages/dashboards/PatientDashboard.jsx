@@ -144,11 +144,13 @@ const PatientDashboard = () => {
             <ServiceCard
               icon={<ShoppingBag className="text-orange-500" />}
               label="Pharmacy"
+              onClick={() => navigate("/pharmecy")}
             />
             <ServiceCard
               icon={<Sparkles className="text-purple-500" />}
               label="AI Analyze"
               isNew
+              onClick={() => navigate("/ai-Analysis")}
             />
           </div>
 
