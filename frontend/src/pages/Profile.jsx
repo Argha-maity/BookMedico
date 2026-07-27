@@ -107,7 +107,7 @@ const Profile = () => {
                <div className="relative z-10">
                   <h3 className="text-lg font-bold border-b border-white/10 pb-4 mb-4">Professional Profile</h3>
                   <div className="space-y-5">
-                    <DoctorInfoItem icon={<Stethoscope size={18}/>} label="Speciality" value={user.speciality} />
+                    <DoctorInfoItem icon={<Stethoscope size={18}/>} label="Speciality" value={user.specialty} />
                     <DoctorInfoItem icon={<GraduationCap size={18}/>} label="Degree" value={user.degree} />
                     <DoctorInfoItem icon={<Briefcase size={18}/>} label="Experience" value={`${user.experience} Years`} />
                   </div>
@@ -130,7 +130,7 @@ const Profile = () => {
             {/* Show Doctor fields in edit mode if user is doctor */}
             {isDoctor && isEdit && (
               <>
-                <DetailField label="Speciality" value={user.speciality} isEdit={isEdit} name="speciality" />
+                <DetailField label="Speciality" value={user.specialty} isEdit={isEdit} name="specialty" />
                 <DetailField label="Degree" value={user.degree} isEdit={isEdit} name="degree" />
                 <DetailField label="Experience (Years)" value={user.experience} isEdit={isEdit} type="number" name="experience" />
               </>

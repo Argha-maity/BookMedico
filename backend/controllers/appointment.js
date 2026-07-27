@@ -6,6 +6,14 @@ const bookAppointment = async (req, res) => {
         const { doctorId, slotDate, slotTime } = req.body;
         const patientId = req.user?.id || req.body.patientId;
 
+        const doctor = await Doctor.findById(doctorId);
+        if (!doctor) {
+            return res.status(404).json({
+                success: false,
+                message: "Doctor not found"
+            });
+        }
+
         const existing = await Appointment.findOne({
             doctorId,
             slotDate,
@@ -24,7 +32,7 @@ const bookAppointment = async (req, res) => {
             doctorId,
             slotDate,
             slotTime,
-            amount: 500 
+            amount: doctor.fees || 500
         });
         await appointment.save();
         res.status(201).json({
@@ -53,7 +61,7 @@ const getMyAppointments = async (req, res) => {
         const patientId = req.user?.id || req.body.patientId;
 
         const appointments = await Appointment.find({ patientId })
-            .populate("doctorId", "name speciality");
+            .populate("doctorId", "name specialty");
 
         res.json({
             success: true,
@@ -100,7 +108,7 @@ const getAllAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find()
             .populate("patientId", "name")
-            .populate("doctorId", "name speciality");
+            .populate("doctorId", "name specialty");
 
         res.json({
             success: true,

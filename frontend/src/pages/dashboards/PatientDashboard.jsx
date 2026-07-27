@@ -168,7 +168,7 @@ const PatientDashboard = () => {
                       name={appt.doctorId?.name || "Doctor"}
                       date={appt.slotDate}
                       status={appt.status}
-                      type={appt.doctorId?.speciality || "General"}
+                      type={appt.doctorId?.specialty || "General"}
                     />
                   </div>
                 ))
@@ -221,7 +221,7 @@ const PatientDashboard = () => {
 
             <div className="space-y-4 text-slate-700 font-medium">
               <DetailRow label="Doctor Name" value={`Dr. ${selectedAppt.doctorId?.name || "N/A"}`} />
-              <DetailRow label="Specialization" value={selectedAppt.doctorId?.speciality || "General Physician"} />
+              <DetailRow label="Specialization" value={selectedAppt.doctorId?.specialty || "General Physician"} />
 
               <div className="grid grid-cols-2 gap-4">
                 <DetailRow label="Date" value={selectedAppt.slotDate} />

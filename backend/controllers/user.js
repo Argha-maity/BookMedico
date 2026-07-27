@@ -42,10 +42,11 @@ const handleUserSignup = async (req, res) => {
                 name,
                 phone,
                 specialty: "General Physician", 
+                degree: "",
                 experience: 0,
                 fees: 500,
                 isActive: true,
-                availability: {}
+                availability: []
             });
         }
 
@@ -107,7 +108,28 @@ const handleUserLogin = async (req, res) => {
 const getProfile = async (req,res)=>{
     try{
         const user = await User.findById(req.user.id).select("-password");
-        res.json(user);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        let profile = user.toObject();
+
+        if (user.role === "doctor") {
+            const doctor = await Doctor.findOne({ userId: user._id });
+            if (doctor) {
+                profile = {
+                    ...profile,
+                    specialty: doctor.specialty,
+                    degree: doctor.degree,
+                    experience: doctor.experience,
+                    hospital: doctor.hospital,
+                    fees: doctor.fees,
+                };
+            }
+        }
+
+        res.json(profile);
     }catch(err){
         res.status(500).json({
             message:"Failed to fetch profile"
@@ -118,16 +140,45 @@ const getProfile = async (req,res)=>{
 const updateProfile = async (req,res)=>{
 
     try{
+        const { specialty, degree, experience, hospital, fees, ...userFields } = req.body;
 
         const updatedUser = await User.findByIdAndUpdate(
             req.user.id,
-            req.body,
+            userFields,
             {new:true}
         ).select("-password");
 
+        let profile = updatedUser.toObject();
+
+        if (updatedUser.role === "doctor") {
+            const doctorUpdate = {};
+            if (specialty !== undefined) doctorUpdate.specialty = specialty;
+            if (degree !== undefined) doctorUpdate.degree = degree;
+            if (experience !== undefined) doctorUpdate.experience = experience;
+            if (hospital !== undefined) doctorUpdate.hospital = hospital;
+            if (fees !== undefined) doctorUpdate.fees = fees;
+
+            const doctor = await Doctor.findOneAndUpdate(
+                { userId: updatedUser._id },
+                doctorUpdate,
+                { new: true }
+            );
+
+            if (doctor) {
+                profile = {
+                    ...profile,
+                    specialty: doctor.specialty,
+                    degree: doctor.degree,
+                    experience: doctor.experience,
+                    hospital: doctor.hospital,
+                    fees: doctor.fees,
+                };
+            }
+        }
+
         res.json({
             message:"Profile updated",
-            user:updatedUser
+            user:profile
         });
 
     }catch(err){

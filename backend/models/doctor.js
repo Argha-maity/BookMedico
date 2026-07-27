@@ -23,6 +23,11 @@ const doctorSchema = new mongoose.Schema({
     required: true
   },
 
+  degree: {
+    type: String,
+    default: ""
+  },
+
   experience: {
     type: Number, // in years
     required: true
